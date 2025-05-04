@@ -14,6 +14,7 @@ type EmailFormData = z.infer<typeof emailSchema>;
 export default function Home() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const {
     register,
@@ -25,14 +26,25 @@ export default function Home() {
 
   const onSubmit = async (data: EmailFormData) => {
     setIsLoading(true);
+    setError(null);
     try {
-      // Here you would typically send the email to your backend
-      console.log('Email submitted:', data.email);
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: data.email }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to subscribe');
+      }
+
       setIsSubmitted(true);
     } catch (error) {
-      console.error('Error submitting email:', error);
+      console.error('Subscription error:', error);
+      setError(error instanceof Error ? error.message : 'An error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -67,6 +79,9 @@ export default function Home() {
             </div>
             {errors.email && (
               <p className="text-red-500 text-sm">{errors.email.message}</p>
+            )}
+            {error && (
+              <p className="text-red-500 text-sm">{error}</p>
             )}
           </form>
         ) : (

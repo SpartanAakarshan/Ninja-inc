@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     // 2. Send a confirmation email
     // 3. Add to your email marketing service
 
-    // For now, we'll just log it
+    // For now, we'll just log it and return success
     console.log('New subscription:', email);
 
     return NextResponse.json(
@@ -24,9 +24,17 @@ export async function POST(request: Request) {
     );
   } catch (error) {
     console.error('Subscription error:', error);
+    
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Invalid email address' },
+        { status: 400 }
+      );
+    }
+
     return NextResponse.json(
-      { error: 'Invalid email address' },
-      { status: 400 }
+      { error: 'An error occurred while processing your subscription' },
+      { status: 500 }
     );
   }
 }
