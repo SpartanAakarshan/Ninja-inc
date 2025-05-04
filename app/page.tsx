@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Image from 'next/image';
 
 const emailSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -51,43 +52,32 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-4">
-      <div className="max-w-2xl w-full space-y-8 text-center">
-        <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-          Welcome to <span className="text-primary">Ninja.inc</span>
-        </h1>
-        <p className="text-xl text-gray-600">
-          The future of SaaS solutions is here. Join our waitlist to be the first to know when we launch.
-        </p>
-
+    <main className="min-h-screen bg-black flex flex-col items-center justify-center p-4">
+      <div className="flex flex-col items-center justify-center gap-12 w-full">
+        <Image
+          src="/ninja-image.png"
+          alt="Ninja Logo"
+          width={250}
+          height={250}
+          priority
+        />
         {!isSubmitted ? (
-          <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-4">
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <input
-                type="email"
-                {...register('email')}
-                placeholder="Enter your email"
-                className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              />
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="px-6 py-2 bg-primary text-white rounded-md hover:bg-secondary transition-colors disabled:opacity-50"
-              >
-                {isLoading ? 'Joining...' : 'Join Waitlist'}
-              </button>
-            </div>
-            {errors.email && (
-              <p className="text-red-500 text-sm">{errors.email.message}</p>
-            )}
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="px-12 py-4 bg-white text-black text-xl font-bold rounded-full hover:bg-gray-200 transition-colors disabled:opacity-50"
+            >
+              {isLoading ? 'Joining...' : 'Join'}
+            </button>
             {error && (
               <p className="text-red-500 text-sm">{error}</p>
             )}
           </form>
         ) : (
-          <div className="mt-8 p-4 bg-green-100 text-green-700 rounded-md">
+          <div className="p-4 bg-white/10 text-white rounded-full">
             <p className="text-lg font-medium">
-              Thank you for joining our waitlist! We'll be in touch soon.
+              Thank you for joining!
             </p>
           </div>
         )}
