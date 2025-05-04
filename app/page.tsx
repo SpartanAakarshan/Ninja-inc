@@ -55,7 +55,7 @@ export default function Home() {
     <main className="min-h-screen bg-black flex flex-col items-center justify-center p-4">
       <div className="flex flex-col items-center justify-center gap-12 w-full">
         <Image
-          src="/ninja-image.png"
+          src="/ninja-image.PNG"
           alt="Ninja Logo"
           width={250}
           height={250}
