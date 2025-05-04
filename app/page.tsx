@@ -52,35 +52,37 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-black flex flex-col items-center justify-center p-4">
-      <div className="flex flex-col items-center justify-center gap-12 w-full">
+    <main className="min-h-screen bg-black">
+      <div className="relative w-full h-screen flex items-center justify-center">
         <Image
           src="/ninja-image.PNG"
           alt="Ninja Logo"
-          width={250}
-          height={250}
+          fill
+          style={{ objectFit: 'cover', objectPosition: 'center' }}
           priority
         />
-        {!isSubmitted ? (
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="px-12 py-4 bg-white text-black text-xl font-bold rounded-full hover:bg-gray-200 transition-colors disabled:opacity-50"
-            >
-              {isLoading ? 'Joining...' : 'Join'}
-            </button>
-            {error && (
-              <p className="text-red-500 text-sm">{error}</p>
-            )}
-          </form>
-        ) : (
-          <div className="p-4 bg-white/10 text-white rounded-full">
-            <p className="text-lg font-medium">
-              Thank you for joining!
-            </p>
-          </div>
-        )}
+        <div className="absolute inset-0 flex items-center justify-center">
+          {!isSubmitted ? (
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="px-12 py-4 bg-white text-black text-xl font-bold rounded-full hover:bg-gray-200 transition-colors disabled:opacity-50"
+              >
+                {isLoading ? 'Joining...' : 'Join'}
+              </button>
+              {error && (
+                <p className="text-red-500 text-sm">{error}</p>
+              )}
+            </form>
+          ) : (
+            <div className="p-4 bg-white/10 text-white rounded-full">
+              <p className="text-lg font-medium">
+                Thank you for joining!
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </main>
   );
