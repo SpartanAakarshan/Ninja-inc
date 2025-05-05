@@ -63,14 +63,14 @@ export default function Home() {
           className="mx-auto"
           priority
         />
-        <div className="mt-2 flex flex-col items-center justify-center w-full">
+        <div className="mt-0 flex flex-col items-center justify-center w-full">
           {!isSubmitted ? (
             <>
               {!showEmailInput ? (
                 <button
                   type="button"
                   onClick={() => setShowEmailInput(true)}
-                  className="px-12 py-4 bg-white text-black text-xl font-bold rounded-full hover:bg-gray-200 transition-colors disabled:opacity-50 mt-4"
+                  className="px-12 py-4 bg-white text-black text-xl font-bold rounded-full hover:bg-gray-200 transition-colors disabled:opacity-50 mt-1"
                 >
                   Join
                 </button>
