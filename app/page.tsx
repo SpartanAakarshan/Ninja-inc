@@ -52,23 +52,37 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-black">
-      <div className="relative w-full h-screen">
+    <main className="min-h-screen bg-black flex flex-col items-center justify-center">
+      <div className="w-full h-screen flex flex-col items-center justify-center bg-black">
         <Image
           src="/ninja-image.PNG"
           alt="Ninja Logo"
-          fill
-          style={{ objectFit: 'cover', objectPosition: 'center' }}
-          className="pointer-events-none"
+          width={500}
+          height={500}
+          className="mx-auto"
           priority
         />
-        <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-auto border-4 border-red-500">
-          <button
-            onClick={() => alert('Button works!')}
-            className="px-12 py-4 bg-white text-black text-xl font-bold rounded-full"
-          >
-            Join
-          </button>
+        <div className="mt-8 flex items-center justify-center">
+          {!isSubmitted ? (
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="px-12 py-4 bg-white text-black text-xl font-bold rounded-full hover:bg-gray-200 transition-colors disabled:opacity-50"
+              >
+                {isLoading ? 'Joining...' : 'Join'}
+              </button>
+              {error && (
+                <p className="text-red-500 text-sm">{error}</p>
+              )}
+            </form>
+          ) : (
+            <div className="p-4 bg-white/10 text-white rounded-full">
+              <p className="text-lg font-medium">
+                Thank you for joining!
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </main>
