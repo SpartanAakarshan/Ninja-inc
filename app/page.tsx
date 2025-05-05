@@ -59,9 +59,10 @@ export default function Home() {
           alt="Ninja Logo"
           fill
           style={{ objectFit: 'cover', objectPosition: 'center' }}
+          className="pointer-events-none"
           priority
         />
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-auto">
           {!isSubmitted ? (
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <button
