@@ -16,6 +16,7 @@ export default function Home() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showEmailInput, setShowEmailInput] = useState(false);
 
   const {
     register,
@@ -62,22 +63,43 @@ export default function Home() {
           className="mx-auto"
           priority
         />
-        <div className="mt-8 flex items-center justify-center">
+        <div className="mt-2 flex flex-col items-center justify-center w-full">
           {!isSubmitted ? (
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="px-12 py-4 bg-white text-black text-xl font-bold rounded-full hover:bg-gray-200 transition-colors disabled:opacity-50"
-              >
-                {isLoading ? 'Joining...' : 'Join'}
-              </button>
-              {error && (
-                <p className="text-red-500 text-sm">{error}</p>
+            <>
+              {!showEmailInput ? (
+                <button
+                  type="button"
+                  onClick={() => setShowEmailInput(true)}
+                  className="px-12 py-4 bg-white text-black text-xl font-bold rounded-full hover:bg-gray-200 transition-colors disabled:opacity-50 mt-4"
+                >
+                  Join
+                </button>
+              ) : (
+                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center space-y-2 mt-4 w-full max-w-xs">
+                  <input
+                    type="email"
+                    {...register('email')}
+                    placeholder="Enter your email"
+                    className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent w-full"
+                  />
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="px-8 py-2 bg-white text-black text-lg font-bold rounded-full hover:bg-gray-200 transition-colors disabled:opacity-50 w-full"
+                  >
+                    {isLoading ? 'Joining...' : 'Submit'}
+                  </button>
+                  {errors.email && (
+                    <p className="text-red-500 text-sm">{errors.email.message}</p>
+                  )}
+                  {error && (
+                    <p className="text-red-500 text-sm">{error}</p>
+                  )}
+                </form>
               )}
-            </form>
+            </>
           ) : (
-            <div className="p-4 bg-white/10 text-white rounded-full">
+            <div className="p-4 bg-white/10 text-white rounded-full mt-4">
               <p className="text-lg font-medium">
                 Thank you for joining!
               </p>
