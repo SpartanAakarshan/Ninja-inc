@@ -6,13 +6,22 @@ const emailSchema = z.object({
   email: z.string().email(),
 });
 
-// Initialize Neon client with environment variable
-const sql = neon(process.env.NEON_DATABASE_URL || 'postgresql://neondb_owner:npg_8F2BRTaYhAVk@ep-square-bonus-a4ydl9a1-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require');
-
 export async function POST(request: Request) {
   try {
     // Log the request
     console.log('Received subscription request');
+
+    // Check if database URL is configured
+    if (!process.env.NEON_DATABASE_URL) {
+      console.error('NEON_DATABASE_URL is not configured');
+      return NextResponse.json(
+        { error: 'Database configuration is missing' },
+        { status: 500 }
+      );
+    }
+
+    // Initialize database connection
+    const sql = neon(process.env.NEON_DATABASE_URL);
 
     // Parse the request body
     const body = await request.json();
@@ -47,10 +56,11 @@ export async function POST(request: Request) {
         { message: 'Successfully subscribed!' },
         { status: 200 }
       );
-    } catch (dbError) {
+    } catch (dbError: unknown) {
       console.error('Database error:', dbError);
+      const errorMessage = dbError instanceof Error ? dbError.message : 'Unknown database error';
       return NextResponse.json(
-        { error: 'Database operation failed', details: dbError.message },
+        { error: 'Database operation failed', details: errorMessage },
         { status: 500 }
       );
     }
@@ -66,9 +76,9 @@ export async function POST(request: Request) {
 
     // Log the full error for debugging
     console.error('Full error details:', {
-      name: error.name,
-      message: error.message,
-      stack: error.stack
+      name: error instanceof Error ? error.name : 'Unknown',
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined
     });
 
     return NextResponse.json(

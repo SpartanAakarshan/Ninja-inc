@@ -1,9 +1,6 @@
 import { NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 
-// Initialize Neon client with environment variable
-const sql = neon(process.env.NEON_DATABASE_URL || '');
-
 export async function GET() {
   try {
     // Log the start of the request
@@ -18,6 +15,9 @@ export async function GET() {
       );
     }
 
+    // Initialize database connection
+    const sql = neon(process.env.NEON_DATABASE_URL);
+
     // Query all subscribers
     console.log('Executing database query...');
     const result = await sql`
@@ -28,21 +28,21 @@ export async function GET() {
     console.log('Query executed successfully');
 
     return NextResponse.json({ subscribers: result }, { status: 200 });
-  } catch (error) {
+  } catch (error: unknown) {
     // Enhanced error logging
     console.error('Detailed error in subscribers API:', {
-      name: error.name,
-      message: error.message,
-      stack: error.stack,
-      cause: error.cause
+      name: error instanceof Error ? error.name : 'Unknown',
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      cause: error instanceof Error ? error.cause : undefined
     });
 
     // Return a more detailed error response
     return NextResponse.json(
       { 
         error: 'Failed to fetch subscribers',
-        details: error.message,
-        type: error.name
+        details: error instanceof Error ? error.message : 'Unknown error',
+        type: error instanceof Error ? error.name : 'Unknown'
       },
       { status: 500 }
     );
