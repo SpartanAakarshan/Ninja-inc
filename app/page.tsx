@@ -61,7 +61,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+    <main className="min-h-screen bg-black text-white">
       <div className="container mx-auto px-4 py-16">
         <div className="text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
