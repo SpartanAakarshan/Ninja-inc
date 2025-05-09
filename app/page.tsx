@@ -39,10 +39,18 @@ export default function Home() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to subscribe');
+        let errorMessage = 'Failed to subscribe';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorMessage;
+        } catch (e) {
+          // If response is not JSON, use the status text
+          errorMessage = response.statusText || errorMessage;
+        }
+        throw new Error(errorMessage);
       }
 
+      const result = await response.json();
       setIsSubmitted(true);
     } catch (error) {
       console.error('Subscription error:', error);
