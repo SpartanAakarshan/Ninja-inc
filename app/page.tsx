@@ -68,7 +68,7 @@ export default function Home() {
             Welcome to Ninja.inc
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-gray-300">
-            v1.0.3 - CI/CD Enabled
+            v1.0.3
           </p>
           <div className="flex flex-col items-center justify-center">
             <Image
